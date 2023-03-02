@@ -19,6 +19,8 @@ MongoClient.connect(dbConnectionStr, {useUnifiedTopology:true})
 
         // make sure to use body-parser before handlers
         app.use(bodyParser.urlencoded({extended : true}))
+        app.use(express.static('public'))
+        app.use(bodyParser.json())
 
         //handlers
         app.get("/",(req,res)=>{
@@ -37,6 +39,43 @@ MongoClient.connect(dbConnectionStr, {useUnifiedTopology:true})
                 res.redirect('/')
             })
             .catch(error => console.error(error))
+        })
+
+        app.put('/quotes',(req,res)=>{
+            goatCollection.findOneAndUpdate(
+                {name: 'aditya' },
+                {
+                    $set: {
+                        name: req.body.name,
+                        quote: req.body.quote
+                    }
+                },
+                {
+                    usert: true
+                }
+
+            )
+
+                .then(result => {
+                    res.json('success')
+                })
+                .catch(error => console.error(error))
+        })
+
+
+        app.delete('/quotes', (req,res) =>{
+            goatCollection.deleteOne(
+                {name: req.body.name}
+            )
+
+                .then(result => {
+                    if(result.deletedCount === 0){
+                        return res.json('no deleted quote')
+                    }
+                    res.json('deleted quotes')
+                })
+                .catch(error => console.error(error))
+
         })
 
 
