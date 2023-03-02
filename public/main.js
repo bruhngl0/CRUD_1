@@ -29,13 +29,18 @@ deleteButton.addEventListener('click' , _ => {
         method: 'delete',
         headers: { 'Content-Type' : 'application/json'},
         body: JSON.stringyfy({
-            name: 'mike tyson'
+            name: 'Garth Vadar'
         })
     })
         .then(res=>{
             if(res.ok) return res.json()
         })
-        .then(data => {
-            window.location.reload()
-        })
+        .then(response => {
+            if (response === 'No quote to delete') {
+              message.textContent = 'No Darth Vadar quote to delete'
+            } else {
+              window.location.reload(true)
+            }
+          })
+          .catch(console.error)
 })

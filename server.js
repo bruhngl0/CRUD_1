@@ -13,11 +13,12 @@ MongoClient.connect(dbConnectionStr, {useUnifiedTopology:true})
         db = client.db(dbName)
         const goatCollection = db.collection('goat')
 
-        app.set('view engine', 'ejs')
+        
         
 
 
         // make sure to use body-parser before handlers
+        app.set('view engine', 'ejs')
         app.use(bodyParser.urlencoded({extended : true}))
         app.use(express.static('public'))
         app.use(bodyParser.json())
@@ -70,7 +71,7 @@ MongoClient.connect(dbConnectionStr, {useUnifiedTopology:true})
 
                 .then(result => {
                     if(result.deletedCount === 0){
-                        return res.json('no deleted quote')
+                        return res.json('No quote to delete')
                     }
                     res.json('deleted quotes')
                 })
